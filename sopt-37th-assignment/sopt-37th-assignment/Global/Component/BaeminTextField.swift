@@ -67,7 +67,7 @@ enum BaeminTextFieldType {
 final class BaeminTextField: UIView {
     private let type: BaeminTextFieldType
     private let style: BaeminTextFieldStyle
-    private let textField = UITextField()
+    private(set) var textField = UITextField()
     private let label = UILabel()
     private let labelBackground = UIView()
     

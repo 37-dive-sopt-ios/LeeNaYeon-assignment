@@ -93,6 +93,5 @@ final class BaeminButton: UIButton {
             $0.backgroundColor = style.backgroundColor
             $0.isEnabled = style.isEnabled
         }
-        
     }
 }

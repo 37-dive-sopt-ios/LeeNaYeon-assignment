@@ -22,6 +22,8 @@ final class LoginViewController: BaseViewController {
     
     override func setAddTarget() {
         rootView.loginButton.addTarget(self, action: #selector(loginButtonDidTap), for: .touchUpInside)
+        rootView.idTextField.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+        rootView.passwordTextField.textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -34,4 +36,15 @@ extension LoginViewController {
     private func loginButtonDidTap() {
         
     }
+    
+    @objc
+    private func textFieldDidChange() {
+        if let idText = rootView.idTextField.textField.text,
+            let passwordText = rootView.passwordTextField.textField.text {
+            rootView.loginButton.isEnabled = idText.isValidEmail && passwordText.isValidPassword
+            rootView.loginButton.updateBaeminButtonStyle(style: rootView.loginButton.isEnabled ? .smallSelected : .smallNormal)
+        }
+    }
 }
+
+
