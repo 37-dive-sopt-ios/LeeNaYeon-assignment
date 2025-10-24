@@ -71,12 +71,28 @@ final class BaeminTextField: UIView {
     private let label = UILabel()
     private let labelBackground = UIView()
     
+    private let passwordStackView: UIStackView?
+    private let eyeButton: UIButton?
+    private let clearButton: UIButton?
+    private var isSecure = true
+    
     init(
         textfieldType: BaeminTextFieldType,
         style: BaeminTextFieldStyle = .normal
     ) {
         self.type = textfieldType
         self.style = style
+        
+        if type == .password {
+            passwordStackView = UIStackView()
+            eyeButton = UIButton()
+            clearButton = UIButton()
+        } else {
+            passwordStackView = nil
+            eyeButton = nil
+            clearButton = nil
+        }
+        
         super.init(frame: .zero)
         
         textField.delegate = self
@@ -91,6 +107,13 @@ final class BaeminTextField: UIView {
     
     private func setUI() {
         addSubviews(textField, labelBackground, label)
+        
+        if let passwordStackView = passwordStackView,
+            let eyeButton = eyeButton,
+            let clearButton = clearButton {
+            addSubviews(passwordStackView)
+            passwordStackView.addArrangedSubviews(eyeButton, clearButton)
+        }
     }
     
     private func setStyle(){
@@ -102,6 +125,10 @@ final class BaeminTextField: UIView {
             $0.font = FontManager.bodyR14.font
             $0.layer.cornerRadius = 4
             $0.addPadding()
+            
+            if type == .password {
+                $0.isSecureTextEntry = true
+            }
         }
         
         label.do {
@@ -113,6 +140,23 @@ final class BaeminTextField: UIView {
         labelBackground.do {
             $0.backgroundColor = .baeminWhite
             $0.isHidden = true
+        }
+        
+        if let passwordStackView = passwordStackView {
+            passwordStackView.do {
+                $0.spacing = 16
+                $0.axis = .horizontal
+            }
+        }
+        
+        if let eyeButton = eyeButton {
+            eyeButton.setImage(.eye, for: .normal)
+            eyeButton.addTarget(self, action: #selector(eyeButtonDidTap), for: .touchUpInside)
+        }
+        
+        if let clearButton = clearButton {
+            clearButton.setImage(.xCircle, for: .normal)
+            clearButton.addTarget(self, action: #selector(clearButtonDidTap), for: .touchUpInside)
         }
     }
     
@@ -137,6 +181,13 @@ final class BaeminTextField: UIView {
             $0.height.equalTo(10)
             $0.width.equalTo(label.snp.width).offset(8)
         }
+        
+        if let passwordStackView = passwordStackView {
+            passwordStackView.snp.makeConstraints {
+                $0.trailing.equalToSuperview().inset(20)
+                $0.centerY.equalToSuperview()
+            }
+        }
     }
 }
 
@@ -149,6 +200,7 @@ extension BaeminTextField {
             $0.layer.borderWidth = style.borderWidth
             $0.tintColor = .baeminMint300
             $0.placeholder = style == .selected ? type.placeholder : .none
+            $0.setPlaceholder(color: .baeminGray700)
         }
     }
     
@@ -186,6 +238,21 @@ extension BaeminTextField {
         
         UIView.animate(withDuration: 0.2) {
             self.layoutIfNeeded()
+        }
+    }
+    
+    @objc
+    private func clearButtonDidTap() {
+        textField.text = ""
+    }
+    
+    @objc
+    private func eyeButtonDidTap() {
+        isSecure.toggle()
+        textField.isSecureTextEntry = isSecure
+        let eyeButtonImage = isSecure ? "eye" : "eye_slash"
+        if let eyeButton = eyeButton {
+            eyeButton.setImage(UIImage(named: eyeButtonImage), for: .normal)
         }
     }
 }
