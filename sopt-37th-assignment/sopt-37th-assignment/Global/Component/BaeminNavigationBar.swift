@@ -15,8 +15,9 @@ protocol BaeminNavigationBarDelegate: AnyObject {
 }
 
 final class BaeminNavigationBar: UIView {
-    private let backButton = UIButton()
+    private(set) lazy var backButton = UIButton()
     private let titleLabel = UILabel()
+    weak var delegate: BaeminNavigationBarDelegate?
     
     private let title: String
     

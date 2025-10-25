@@ -192,6 +192,12 @@ final class BaeminTextField: UIView {
 }
 
 extension BaeminTextField {
+    func resetStyle() {
+        updateTextFieldStyle(style: .normal)
+        updateLabelStyle(isStartEditing: false)
+        textField.text = ""
+    }
+    
     private func updateTextFieldStyle(style: BaeminTextFieldStyle) {
         textField.do {
             $0.backgroundColor = style.backgroundColor
