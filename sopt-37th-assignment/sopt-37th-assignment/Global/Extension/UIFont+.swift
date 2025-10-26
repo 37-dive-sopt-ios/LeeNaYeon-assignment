@@ -23,7 +23,12 @@ public extension UIFont {
         }
         
         static func font(_ type: FontType, ofsize size: CGFloat) -> UIFont {
-            return UIFont(name: type.rawValue, size: size)!
+            if let font = UIFont(name: type.rawValue, size: size) {
+                return font
+            }
+            else {
+                fatalError("font not found")
+            }
         }
     }
 }
