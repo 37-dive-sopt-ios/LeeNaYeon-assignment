@@ -222,10 +222,6 @@ extension BaeminTextField {
                 $0.top.equalTo(textField.snp.top).offset(-5)
             }
         } else {
-            trailingStackView.do {
-                $0.isHidden = true
-            }
-            
             label.do {
                 $0.textColor = .baeminGray700
                 $0.font = FontManager.bodyR14.font
@@ -270,6 +266,7 @@ extension BaeminTextField: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         updateTextFieldStyle(style: .normal)
+        trailingStackView.isHidden = true
         guard let text = textField.text else { return }
         if text.isEmpty {
             updateLabelStyle(isStartEditing: false)
