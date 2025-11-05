@@ -7,9 +7,6 @@
 
 import UIKit
 
-import SnapKit
-import Then
-
 final class WelcomeView: BaseView {
     private(set) var navigationBar = BaeminNavigationBar(title: "로그인 완료")
     private let welcomeImage = UIImageView()
