@@ -32,6 +32,7 @@ final class BaeminFeedViewController: BaseViewController {
         rootView.collectionView.register(HeaderViewCell.self, forCellWithReuseIdentifier: HeaderViewCell.identifier)
         rootView.collectionView.register(SegmentViewCell.self, forCellWithReuseIdentifier: SegmentViewCell.identifier)
         rootView.collectionView.register(MarketViewCell.self, forCellWithReuseIdentifier: MarketViewCell.identifier)
+        rootView.collectionView.register(AdvertisementViewCell.self, forCellWithReuseIdentifier: AdvertisementViewCell.identifier)
 
     }
 }
@@ -71,9 +72,9 @@ extension BaeminFeedViewController: UICollectionViewDataSource {
             return cell
         case 3:
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: MarketViewCell.identifier,
+                withReuseIdentifier: AdvertisementViewCell.identifier,
                         for: indexPath
-            ) as! MarketViewCell
+            ) as! AdvertisementViewCell
             return cell
 
         case 4:
