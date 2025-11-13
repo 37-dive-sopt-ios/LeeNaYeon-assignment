@@ -10,7 +10,7 @@ import UIKit
 final class SegmentViewCell: UICollectionViewCell {
     private let segmentCollectionView = UICollectionView(
         frame: .zero,
-        collectionViewLayout: CompositionalFeedLayout.createLayout()
+        collectionViewLayout: SegmentFeedCustomLayout.createLayout()
     )
     
     private let divider = UIView()

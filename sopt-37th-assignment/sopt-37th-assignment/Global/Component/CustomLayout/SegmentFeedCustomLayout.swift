@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct CompositionalFeedLayout {
+struct SegmentFeedCustomLayout {
     static func createLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout { (sectionNumber, _ environment) ->
             NSCollectionLayoutSection in
