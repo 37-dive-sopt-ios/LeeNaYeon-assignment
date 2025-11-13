@@ -20,8 +20,10 @@ public enum FontManager {
     case headB16
     
     case titleSb18
+    case titleSb10
     
     case bodyR14
+    case bodyR10
     
     case captionR10
     
@@ -35,8 +37,12 @@ public enum FontManager {
             return FontProperty(font: .bold, size: 16, lineHeight: 100, kern: -2)
         case .titleSb18:
             return FontProperty(font: .semibold, size: 18, lineHeight: 100, kern: -3)
+        case .titleSb10:
+            return FontProperty(font: .semibold, size: 10, lineHeight: 100, kern: -3)
         case .bodyR14:
             return FontProperty(font: .regular, size: 14, lineHeight: 100, kern: -4)
+        case .bodyR10:
+            return FontProperty(font: .regular, size: 10, lineHeight: 100, kern: -4)
         case .captionR10:
             return FontProperty(font: .regular, size: 10, lineHeight: 199, kern: -4)
         }
