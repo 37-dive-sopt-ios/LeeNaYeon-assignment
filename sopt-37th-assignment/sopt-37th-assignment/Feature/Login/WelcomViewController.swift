@@ -46,7 +46,7 @@ extension WelcomeViewController: BaeminNavigationBarDelegate {
     
     @objc
     private func confirmButtonDidTap() {
-        let viewController = UINavigationController(rootViewController: BaeminFeedViewController())
+        let viewController = UINavigationController(rootViewController: BaeminTabbarController())
         self.view.window?.rootViewController = viewController
     }
 }
