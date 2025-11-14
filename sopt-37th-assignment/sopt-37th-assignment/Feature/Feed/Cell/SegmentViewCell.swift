@@ -25,7 +25,7 @@ final class SegmentViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        backgroundColor = .baeminWhite
         setUI()
         setStyle()
         setLayout()
@@ -64,7 +64,7 @@ final class SegmentViewCell: UICollectionViewCell {
     private func setStyle() {
         self.do {
             $0.layer.cornerRadius = 20
-            $0.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            $0.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
             $0.layer.masksToBounds = true
         }
         
@@ -90,6 +90,7 @@ final class SegmentViewCell: UICollectionViewCell {
         segmentCollectionView.register(SegmentTitleCell.self, forCellWithReuseIdentifier: SegmentTitleCell.identifier)
         segmentCollectionView.register(SegmentUnderlineCell.self, forCellWithReuseIdentifier: SegmentUnderlineCell.identifier)
         segmentCollectionView.register(SegmentFeedCell.self, forCellWithReuseIdentifier: SegmentFeedCell.identifier)
+        segmentCollectionView.register(SegmentEmptyCell.self, forCellWithReuseIdentifier: SegmentEmptyCell.identifier)
     }
     
     private func setDelegate() {
@@ -106,8 +107,9 @@ final class SegmentViewCell: UICollectionViewCell {
 
 extension SegmentViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard indexPath.section == 0 else { return }
         selectedIndex = indexPath.row
-        collectionView.reloadSections(IndexSet(integer: 0))
+        collectionView.reloadData()
     }
 }
 
@@ -120,7 +122,12 @@ extension SegmentViewCell: UICollectionViewDataSource {
         switch section {
         case 0: return headerMock.count
         case 1: return 1
-        case 2: return feedMock.count
+        case 2:
+            switch selectedIndex {
+            case 0:
+                return feedMock.count
+            default: return 1
+            }
         default: return 0
         }
     }
@@ -141,12 +148,21 @@ extension SegmentViewCell: UICollectionViewDataSource {
             ) as! SegmentUnderlineCell
             return cell
         case 2:
-            let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SegmentFeedCell.identifier,
-                for: indexPath
-            ) as! SegmentFeedCell
-            cell.bind(cell: feedMock[indexPath.row])
-            return cell
+            if selectedIndex == 0 {
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: SegmentFeedCell.identifier,
+                    for: indexPath
+                ) as! SegmentFeedCell
+                cell.bind(cell: feedMock[indexPath.row])
+                return cell
+            } else {
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: SegmentEmptyCell.identifier,
+                    for: indexPath
+                ) as! SegmentEmptyCell
+                return cell
+            }
+           
         default:
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: SegmentFeedCell.identifier,

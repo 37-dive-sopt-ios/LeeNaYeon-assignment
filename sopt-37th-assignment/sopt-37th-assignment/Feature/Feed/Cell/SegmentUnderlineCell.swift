@@ -29,7 +29,7 @@ final class SegmentUnderlineCell: UICollectionViewCell {
     private func setLayout() {
         underlineView.snp.makeConstraints {
             $0.height.equalTo(1)
-            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.leading.trailing.equalToSuperview().inset(0)
             $0.bottom.equalToSuperview()
         }
     }
