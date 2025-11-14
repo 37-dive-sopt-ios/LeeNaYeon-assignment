@@ -8,9 +8,8 @@
 import UIKit
 
 final class MarketViewCell: UICollectionViewCell {
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: MarketCustomLayout.createLayout() )
-    
-    private var mock: [MarketModel] = []
+    private let image = UIImageView()
+    private let title = UILabel()
         
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,9 +17,6 @@ final class MarketViewCell: UICollectionViewCell {
         setUI()
         setStyle()
         setLayout()
-        setDelegate()
-        register()
-        loadMockData()
     }
     
     required init?(coder: NSCoder) {
@@ -28,51 +24,39 @@ final class MarketViewCell: UICollectionViewCell {
     }
     
     private func setUI() {
-        contentView.backgroundColor = .clear
-        contentView.addSubview(collectionView)
+        contentView.addSubviews(image, title)
     }
     
     private func setStyle() {
-    }
-    
-    private func setLayout() {
-        collectionView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(11)
-            $0.leading.trailing.equalToSuperview()
+        image.do {
+            $0.backgroundColor = .baeminGray200
+            $0.layer.cornerRadius = 20
+            $0.clipsToBounds = true
+            $0.contentMode = .scaleAspectFit
+        }
+        
+        title.do {
+            $0.textColor = .baeminBlack
+            $0.font = FontManager.bodyR14.font
         }
     }
     
-    private func setDelegate() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-    }
-    
-    private func register() {
-        collectionView.register(MarketCell.self, forCellWithReuseIdentifier: MarketCell.identifier)
-    }
-    private func loadMockData() {
-        mock = MarketModel.mockData
-        collectionView.reloadData()
+    private func setLayout() {
+        image.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(54)
+        }
+        
+        title.snp.makeConstraints {
+            $0.top.equalTo(image.snp.bottom).offset(6)
+            $0.centerX.equalToSuperview()
+        }
     }
 }
-
-extension MarketViewCell: UICollectionViewDelegate {
-    
-}
-
-extension MarketViewCell: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        mock.count
+extension MarketViewCell {
+    func bind(model: MarketModel) {
+        self.image.image = model.image
+        self.title.text = model.title
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: MarketCell.identifier,
-            for: indexPath
-        ) as! MarketCell
-        cell.bind(cell: mock[indexPath.row])
-        return cell
-    }
-    
-    
 }
