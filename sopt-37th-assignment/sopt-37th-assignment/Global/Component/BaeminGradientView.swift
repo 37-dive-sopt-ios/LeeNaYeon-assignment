@@ -11,13 +11,15 @@ final class BaeminGradientView: UIView {
     private let startColor: UIColor
     private let endColor: UIColor
     private let gradient: CAGradientLayer = CAGradientLayer()
-    
+    private let isStartColorPrimary: Bool
     init(
         startColor: UIColor,
-        endColor: UIColor
+        endColor: UIColor,
+        isStartColorPrimary: Bool
     ) {
         self.startColor = startColor
         self.endColor = endColor
+        self.isStartColorPrimary = isStartColorPrimary
         super.init(frame: .zero)
         
         setGradient()
@@ -29,9 +31,9 @@ final class BaeminGradientView: UIView {
     
     private func setGradient() {
         gradient.colors = [startColor.cgColor, endColor.cgColor]
-        gradient.locations = [0,1]
+        gradient.locations = [0.0, 1.0]
         gradient.startPoint = CGPoint(x: 0.5, y: 0.0)
-        gradient.endPoint = CGPoint(x: 0.5, y: 1.0)
+        gradient.endPoint = isStartColorPrimary ? CGPoint(x: 0.5, y: 0.4) : CGPoint(x: 0.5, y: 1.0)
         gradient.frame = bounds
         layer.addSublayer(gradient)
     }

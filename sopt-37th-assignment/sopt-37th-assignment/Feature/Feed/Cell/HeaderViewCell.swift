@@ -15,7 +15,7 @@ final class HeaderViewCell: UICollectionViewCell {
     private let baeminIcon = UIImageView()
     private let saleLabel = UILabel()
     private let moreButton = UIButton()
-    private let gradationView = BaeminGradientView(startColor: .backgroundWhite, endColor: .gradientMint)
+    private let gradationView = BaeminGradientView(startColor: .backgroundWhite, endColor: .gradientMint, isStartColorPrimary: false )
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,13 +30,13 @@ final class HeaderViewCell: UICollectionViewCell {
     }
     
     private func setUI() {
-        contentView.backgroundColor = .clear
+        contentView.backgroundColor = .backgroundWhite
         contentView.addSubviews(navigationBar, searchBar, gradationView, saleView)
         saleView.addSubviews(baeminIcon, saleLabel, moreButton)
     }
     
     private func setStyle() {
-        contentView.backgroundColor = .baeminWhite
+        contentView.backgroundColor = .backgroundWhite
         baeminIcon.do {
             $0.image = .bmart
             $0.contentMode = .scaleAspectFill
