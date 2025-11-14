@@ -148,7 +148,7 @@ struct CustomCompositionalLayout {
         section.boundarySupplementaryItems = [header]
         section.contentInsets = .zero
         section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets.bottom = 80
+        section.contentInsets.bottom = 100
         return section
     }
 }
