@@ -8,9 +8,7 @@
 import UIKit
 
 final class AdvertisementViewCell: UICollectionViewCell {
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: AdvertisementCustomLayout.createLayout())
-    
-    private var mock: [AdvertisementModel] = []
+    private let image = UIImageView()
         
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,9 +16,6 @@ final class AdvertisementViewCell: UICollectionViewCell {
         setUI()
         setStyle()
         setLayout()
-        setDelegate()
-        register()
-        loadMockData()
     }
     
     required init?(coder: NSCoder) {
@@ -28,54 +23,24 @@ final class AdvertisementViewCell: UICollectionViewCell {
     }
     
     private func setUI() {
-        contentView.addSubview(collectionView)
+        contentView.addSubviews(image)
     }
     
     private func setStyle() {
-        collectionView.do {
-            $0.contentInsetAdjustmentBehavior = .never
-            $0.isPagingEnabled = true
+        image.do {
+            $0.contentMode = .scaleAspectFill
         }
     }
     
     private func setLayout() {
-        collectionView.snp.makeConstraints {
-            $0.top.bottom.equalToSuperview().inset(10)
-            $0.leading.trailing.equalToSuperview()
+        image.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
-    
-    private func setDelegate() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-    }
-    
-    private func register() {
-        collectionView.register(AdvertisementEachCell.self, forCellWithReuseIdentifier: AdvertisementEachCell.identifier)
-    }
-    private func loadMockData() {
-        mock = AdvertisementModel.mockData
-        collectionView.reloadData()
-    }
 }
 
-extension AdvertisementViewCell: UICollectionViewDelegate {
-    
-}
-
-extension AdvertisementViewCell: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        mock.count
+extension AdvertisementViewCell {
+    func bind(model: AdvertisementModel) {
+        self.image.image = model.image
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: AdvertisementEachCell.identifier,
-            for: indexPath
-        ) as! AdvertisementEachCell
-        cell.bind(cell: mock[indexPath.row])
-        return cell
-    }
-    
-    
 }
