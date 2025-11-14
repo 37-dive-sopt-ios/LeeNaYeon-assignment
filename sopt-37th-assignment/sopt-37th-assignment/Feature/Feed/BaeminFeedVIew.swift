@@ -20,11 +20,15 @@ final class BaeminFeedView: BaseView {
     
     override func setStyle() {
         backgroundColor = .backgroundWhite
+        collectionView.do {
+            $0.backgroundColor = .baeminWhite
+        }
     }
     
     override func setLayout() {
         collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalToSuperview().inset(40)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }
