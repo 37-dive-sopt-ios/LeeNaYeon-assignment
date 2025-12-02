@@ -12,10 +12,10 @@ final class WelcomeView: BaseView {
     private let welcomeImage = UIImageView()
     private let welcomeLabel = UILabel()
     private let nameLabel = UILabel()
-    private(set) lazy var backButton = BaeminButton(style: .LongSelected, title: "뒤로 가기")
+    private(set) lazy var confirmButton = BaeminButton(style: .LongSelected, title: "메인으로 가기")
     
     override func setUI() {
-        addSubviews(navigationBar, welcomeImage, welcomeLabel, nameLabel, backButton)
+        addSubviews(navigationBar, welcomeImage, welcomeLabel, nameLabel, confirmButton)
     }
     
     override func setStyle() {
@@ -61,7 +61,7 @@ final class WelcomeView: BaseView {
             $0.centerX.equalToSuperview()
         }
         
-        backButton.snp.makeConstraints {
+        confirmButton.snp.makeConstraints {
             $0.bottom.equalToSuperview().inset(48)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
