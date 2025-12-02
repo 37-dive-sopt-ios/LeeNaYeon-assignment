@@ -5,11 +5,14 @@
 //  Created by 이나연 on 12/3/25.
 //
 
+import Combine
 import UIKit
 
 final class LoginViewController_Combine: BaseViewController {
     
     private let rootView = LoginView()
+    private let viewModel = LoginViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
     override func loadView() {
         view = rootView
@@ -18,6 +21,8 @@ final class LoginViewController_Combine: BaseViewController {
     override func viewDidLoad() {
         setAddTarget()
         setDelegate()
+        
+        bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,23 +52,8 @@ final class LoginViewController_Combine: BaseViewController {
 extension LoginViewController_Combine {
     @objc
     private func loginButtonDidTap() {
-        if let idText = rootView.idTextField.textField.text,
-            let passwordText = rootView.passwordTextField.textField.text {
-            if idText.isValidEmail && passwordText.isValidPassword {
-                let viewController = WelcomeViewController()
-                viewController.name = idText
-                self.navigationController?.pushViewController(viewController, animated: true)
-            } else {
-                if !idText.isValidEmail && !passwordText.isValidPassword {
-                    showAlert(type: "이메일, 비밀번호")
-                }
-                else if !passwordText.isValidPassword {
-                    showAlert(type: "비밀번호")
-                }
-                else {
-                    showAlert(type: "이메일")
-                }
-            }
+        if let idText = rootView.idTextField.textField.text, let passwordText = rootView.passwordTextField.textField.text {
+            viewModel.action(.loginButtonDidTap(id: idText, password: passwordText))
         }
     }
     
@@ -89,6 +79,29 @@ extension LoginViewController_Combine {
         present(bottomSheetViewController, animated: true)
     }
     
+    private func bind() {
+        viewModel.output.isSuccessLoginResultPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                switch result {
+                case true:
+                    let viewController = WelcomeViewController()
+                    self?.navigationController?.pushViewController(viewController, animated: true)
+                case false:
+                    print("로그인 실패")
+                    
+                }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.output.notValidTypeResultPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.showAlert(type: result)
+            }
+            .store(in: &cancellables)
+    }
+    
     private func showAlert(type: String) {
         let alert = UIAlertController(title: "\(type) 형식이 달라요", message: "형식에 맞춰 다시 작성해주세요", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "확인", style: .default, handler: nil)
@@ -98,8 +111,7 @@ extension LoginViewController_Combine {
     }
 }
 
-
-extension LoginViewController: findIDBottomSheetDelegate {
+extension LoginViewController_Combine: findIDBottomSheetDelegate {
     func confirmButtonDidTap(name: String) {
         rootView.nameLabel.text = name
     }
